@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "skeet-loader", "skeet-loader.vcxproj", "{72E2C7EC-EF31-440A-BDA7-369FA437B209}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72E2C7EC-EF31-440A-BDA7-369FA437B209}.Debug|x64.ActiveCfg = Debug|x64
+		{72E2C7EC-EF31-440A-BDA7-369FA437B209}.Debug|x64.Build.0 = Debug|x64
+		{72E2C7EC-EF31-440A-BDA7-369FA437B209}.Debug|x86.ActiveCfg = Debug|Win32
+		{72E2C7EC-EF31-440A-BDA7-369FA437B209}.Debug|x86.Build.0 = Debug|Win32
+		{72E2C7EC-EF31-440A-BDA7-369FA437B209}.Release|x64.ActiveCfg = Release|x64
+		{72E2C7EC-EF31-440A-BDA7-369FA437B209}.Release|x64.Build.0 = Release|x64
+		{72E2C7EC-EF31-440A-BDA7-369FA437B209}.Release|x86.ActiveCfg = Release|Win32
+		{72E2C7EC-EF31-440A-BDA7-369FA437B209}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C7D39C25-6E1E-41B9-B5FB-182566AF404D}
+	EndGlobalSection
+EndGlobal
