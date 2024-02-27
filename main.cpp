@@ -65,7 +65,7 @@ end:
 void launchCS2(bool isInsecure) {
     std::wstring steamExePath = getSteamPath();
     std::wstring appID = L"730";
-    std::wstring commandLine = L"-applaunch " + appID + (isInsecure ? L" -insecure" : L"");
+    std::wstring commandLine = L"-applaunch " + appID;
 
     STARTUPINFOW si = { 0 };
     PROCESS_INFORMATION pi = { 0 };
