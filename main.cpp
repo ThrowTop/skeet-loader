@@ -14,7 +14,7 @@
 #pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 // Macros
-// #define DEBUG
+//#define DEBUG
 #define returnif(v) if (v) return v;
 
 namespace fs = std::filesystem;
@@ -25,7 +25,7 @@ void launchCS2(bool);
 
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow) {
 #ifdef DEBUG
-    CreateConsole();
+    winUtils::CreateConsole();
 #endif
 
     if (!winUtils::IsRunningAsAdmin()) {
@@ -38,23 +38,29 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
     std::wcout << L"Running with elevated privileges." << std::endl;
 
-    int result = MessageBoxA(NULL, "Launch CS2 in insecure mode", "Insecure Launch", MB_YESNOCANCEL | MB_DEFBUTTON2 | MB_ICONQUESTION);
-    
-    if (result == IDCANCEL) return 0;
-
-    launchCS2(result == IDYES);
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(1250));
-
-    DWORD PID = getCS2PID();
-    if (PID)
+    DWORD PID = winUtils::FindProcessId(L"cs2.exe");
+    if (PID) {
         RunLoader(PID, LoaderID::CS2);
+    }
+    else {
+        launchCS2(false);
 
+        std::this_thread::sleep_for(std::chrono::milliseconds(1250));
+
+        PID = getCS2PID();
+        if (PID)
+            RunLoader(PID, LoaderID::CS2);
+    }
+
+end:
+    std::wcout << L"Done!" << std::endl;
 #ifdef DEBUG
     system("pause>0");
 #endif
     return 0;
 }
+
+
 
 void launchCS2(bool isInsecure) {
     std::wstring steamExePath = getSteamPath();
@@ -65,6 +71,8 @@ void launchCS2(bool isInsecure) {
     PROCESS_INFORMATION pi = { 0 };
     si.cb = sizeof(si);
 
+    std::wcout << L"Launching CS2:" << std::endl;
+    std::wcout << L"Executing command: " << steamExePath << L" " << commandLine << std::endl;
     if (CreateProcessW(steamExePath.c_str(), &commandLine[0], NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi)) {
         CloseHandle(pi.hProcess);
         CloseHandle(pi.hThread);
@@ -81,13 +89,13 @@ std::wstring getSteamPath() {
     long lResult;
     std::wstring steamPath;
 
-    lResult = RegOpenKeyEx(HKEY_CURRENT_USER, L"Software\\Valve\\Steam", 0, KEY_QUERY_VALUE, &hKey);
+    lResult = RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Valve\\Steam", 0, KEY_QUERY_VALUE, &hKey);
     if (lResult == ERROR_SUCCESS) {
-        lResult = RegQueryValueEx(hKey, L"SteamPath", NULL, &dwType, NULL, &dwSize);
+        lResult = RegQueryValueExW(hKey, L"SteamPath", NULL, &dwType, NULL, &dwSize);
         if (lResult == ERROR_SUCCESS) {
             wchar_t* buffer = new wchar_t[dwSize / sizeof(wchar_t)];
 
-            lResult = RegQueryValueEx(hKey, L"SteamPath", NULL, &dwType, reinterpret_cast<LPBYTE>(buffer), &dwSize);
+            lResult = RegQueryValueExW(hKey, L"SteamPath", NULL, &dwType, reinterpret_cast<LPBYTE>(buffer), &dwSize);
             if (lResult == ERROR_SUCCESS) {
                 steamPath.assign(buffer, dwSize / sizeof(wchar_t) - 1);
             }

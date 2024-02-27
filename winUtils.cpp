@@ -4,6 +4,8 @@
 #include <iostream>
 #include <filesystem> 
 #include <string>
+#include <stdexcept>
+#include <array>
 
 namespace winUtils {
     struct HandleDeleter {
